@@ -1,0 +1,21 @@
+name: Build and validate
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Compile Python source
+        run: python -m py_compile server.py
+      - name: Check app files
+        run: test -s index.html && test -s styles.css && test -s app.js && test -s Dockerfile
+      - name: Build container
+        run: docker build -t northstar:${{ github.sha }} .
+

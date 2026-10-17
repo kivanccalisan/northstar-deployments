@@ -1,0 +1,14 @@
+services:
+  northstar:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      DATABASE_PATH: /data/northstar.db
+    volumes:
+      - northstar_data:/data
+    restart: unless-stopped
+volumes:
+  northstar_data:
+
